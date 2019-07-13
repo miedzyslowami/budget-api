@@ -5,7 +5,7 @@ const app = express();
 const { Client } = require('pg');
 const bodyParser = require('body-parser');
 
-const router = require('./routes/');
+const router = require('./routes/public');
 
 app.use(router);
 app.use(express.static('./public'));
