@@ -7,8 +7,20 @@ const bodyParser = require('body-parser');
 
 const router = require('./routes/public');
 
+const cool = require('cool-ascii-faces');
+const path = require('path');
+const PORT = process.env.PORT || 5000
+
+express()
+  .use(express.static(path.join(__dirname, 'public')))
+  .set('views', path.join(__dirname, 'views'))
+  .set('view engine', 'ejs')
+  .get('/', (req, res) => res.render('pages/index'))
+  .get('/cool', (req, res) => res.send(cool()))
+  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+
+
 app.use(router);
-app.use(express.static('./public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // const authConfig = {
@@ -82,5 +94,3 @@ app.get('/connection/transaction/:id', (req, res) => {
         client.end();
     })
 })
-
-app.listen(5555, () => console.log('API started on port 5555'));
