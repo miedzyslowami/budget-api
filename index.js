@@ -52,10 +52,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 
 const client = new Client({
-    user: 'gonia',
-    host: 'localhost',
-    database: 'budget',
-    password: 'Gosiaczek84',
+    user: 'dkokjeijzfquzw',
+    host: 'ec2-174-129-29-101.compute-1.amazonaws.com',
+    database: 'd8964drglas3td',
+    password: '77602e2682f2e28fa06d6d26599e2b16aba9c74c6da743a86d24284e8304eeec',
     port: 5432,
 });
 
