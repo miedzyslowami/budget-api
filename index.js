@@ -5,7 +5,9 @@ const app = express();
 const { Client } = require('pg');
 const bodyParser = require('body-parser');
 
+const router = require('./routes/');
 
+app.use(router);
 app.use(express.static('./public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -45,6 +47,7 @@ const client = new Client({
     port: 5432,
 });
 
+//TODO refactor to connection pool
 client.connect();
 
 app.get('/connection', (req, res) => {
