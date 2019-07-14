@@ -1,14 +1,16 @@
-const express = require('express')
-// const expressjwt = require('express-jwt')
-// const jwks = require('jwks-rsa')
-const app = express()
-const bodyParser = require('body-parser')
-const cool = require('cool-ascii-faces')
-const path = require('path')
-const PORT = process.env.PORT || 5000
-
+const express = require('express');
+// const expressjwt = require('express-jwt');
+// const jwks = require('jwks-rsa');
+const app = express();
+const bodyParser = require('body-parser');
+const cool = require('cool-ascii-faces');
+const path = require('path');
+const PORT = process.env.PORT || 5000;
+const cookieParser = require('cookie-parser');
+const { Pool, Client } = require('pg');
 
 app
+    .use(cookieParser())
     .use(express.static(path.join(__dirname, 'public')))
     .use(bodyParser.urlencoded({ extended: false }))
     .set('views', path.join(__dirname, 'views'))
@@ -17,8 +19,11 @@ app
     .get('/cool', (req, res) => res.send(cool()))
     .listen(PORT, () => console.log(`Listening on ${PORT}`))
 
+app.get('/', function(req, res){
+    res.cookie('name', 'express').send('cookie set'); //Sets name = express
+    });
 
-const { Pool, Client } = require('pg')
+
 
 const client = new Client({
     user: 'dkokjeijzfquzw',
@@ -34,10 +39,10 @@ client.connect()
 app.get('/connection', (req, res) => {
     client.query('SELECT * FROM budget', (error, response) => {
         console.log(error ? error.stack : 'connected to database');
-        res.send(response.rows)
-        client.end()
+        res.send(response.rows);
+        client.end();
     })
-})
+});
 
 
 app.get('/public', (req, res) => {
@@ -52,10 +57,10 @@ app.post('/add_transaction', (req, res) => {
             values: [req.body.create_type, req.body.create_value],
             rowMode: 'array'
         }, (error, response) => {
-            res.end()
-            client.end()
+            res.end();
+            client.end();
         })
-    res.end()
+    res.end();
 })
 
 
@@ -64,7 +69,7 @@ app.post('/add_transaction', (req, res) => {
 // const authConfig = {
 //     domain: "miedzyslowami.eu.auth0.com",
 //     audience: "budget-api"
-// };
+// }
 
 // const jwtCheck = expressjwt({
 //     secret: jwks.expressJwtSecret({
