@@ -6,23 +6,17 @@ const bodyParser = require('body-parser');
 const cool = require('cool-ascii-faces');
 const path = require('path');
 const PORT = process.env.PORT || 5000;
-const cookieParser = require('cookie-parser');
 const { Pool, Client } = require('pg');
+const cors = require('cors');
 
 app
-    .use(cookieParser())
+    .use(cors({origin: 'http://localhost:3000/'}))
     .use(express.static(path.join(__dirname, 'public')))
     .use(bodyParser.urlencoded({ extended: false }))
     .set('views', path.join(__dirname, 'views'))
     .set('view engine', 'ejs')
-    // .get('/', (req, res) => res.render('pages/index'))
     .get('/cool', (req, res) => res.send(cool()))
     .listen(PORT, () => console.log(`Listening on ${PORT}`))
-
-app.get('/', function(req, res){
-    res.cookie('name', 'express').send('cookie set'); //Sets name = express
-    });
-
 
 
 const client = new Client({
